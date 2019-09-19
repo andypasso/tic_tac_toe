@@ -31,6 +31,6 @@ class GameLogic
   end
 
   def game_end
-    return true if !winner.nil? || check_empty_space == false
+    return true if !@winner.nil?
   end
 end

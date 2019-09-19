@@ -3,15 +3,13 @@
 require_relative '../lib/game_logic.rb'
 require_relative '../lib/board.rb'
 require_relative '../lib/players.rb'
-require_relative '../lib/ui.rb'
+require_relative '../lib/color.rb'
 
 class Ui
   
-  def intitialize; end
-
   def display_instructions
     puts '*' * 50
-    puts 'Welcome To my Tic-Tac-Toe Game!'.center(50, '*')
+    puts 'Welcome To my Tic-Tac-Toe Game!'.green.center(59, '*')
     puts '*' * 50
     puts '=' * 50
     puts 'RULES'.center(50, '*')
@@ -41,34 +39,35 @@ class Ui
     puts "#{player}, where would you place your mark ?".center(40, ' ').center(50, '*')
     gets.chomp
 
-    # while board.available? == false
-    #   puts 'That cell has already been selected. Please choose another one.'
-    #   @mark = gets.chomp
-    # end
+  end
+  def display_available
+      puts 'That cell has already been selected. Please choose another one.'
+      gets.chomp.to_i
   end
 
   def end_message
     puts '*' * 50
     puts '*' * 50
-    puts 'Thank you for playing!'.center(50, '*')
+    puts 'Thank you for playing!'.green.center(59, '*')
     puts '*' * 50
     puts '*' * 50
   end
 
-  def winner_message
-    puts '*' * 50
+  def winner_message (winner)
+      puts "#{winner.name} wins".black.bg_green.center(68, '*')
     puts '=' * 50
-    if game_logic.check_winner.nil?
+    puts '*' * 50
+  end
+
+  def draw_message
+
+      puts '*' * 50
+      puts '=' * 50
       puts 'the game is a draw'.center(50, '*')
-    else
-      puts "#{winner.name} wins".center(50, '*')
-    end
-    puts '=' * 50
-    puts '*' * 50
   end
 
   def play_again
-    puts 'do you want to play again? [y/n] ' .center(50, '*')
+    puts 'do you want to play again? [y/n] '.brown.center(50, '*')
     @again = gets.chomp.upcase
     loop do
       break unless @again != Y && @again != N
@@ -80,12 +79,13 @@ class Ui
   end
 
   def display_board(cells)
+    puts '*' * 50
     puts '   |   |   '.center(40, ' ').center(50, '*')
-    puts " #{cells[0]} | #{cells[1]} | #{cells[2]} ".center(40, ' ').center(50, '*')
+    puts " #{cells[0]} | #{cells[1]} | #{cells[2]} ".center(69, ' ').center(77, '*')
     puts '----+----+----'.center(40, ' ').center(50, '*')
-    puts " #{cells[3]} | #{cells[4]} | #{cells[5]} ".center(40, ' ').center(50, '*')
+    puts " #{cells[3]} | #{cells[4]} | #{cells[5]} ".center(69, ' ').center(77, '*')
     puts '----+----+----'.center(40, ' ').center(50, '*')
-    puts " #{cells[6]} | #{cells[7]} | #{cells[8]} ".center(40, ' ').center(50, '*')
+    puts " #{cells[6]} | #{cells[7]} | #{cells[8]} ".center(69, ' ').center(77, '*')
     puts '   |   |   '.center(40, ' ').center(50, '*')
     puts '*' * 50
     puts '*' * 50
@@ -122,6 +122,10 @@ until game_logic.game_end
                        player2.name
                      end).to_i
 
+  while board.available?(mark)
+    mark = ui.display_available
+  end
+
   if current_player == 'player1'
     player1.array.push(mark)
   else
@@ -131,6 +135,7 @@ until game_logic.game_end
   board.change
 
   ui.display_board board.cell
+  winner = game_logic.check_winner
 
   current_player = if current_player == 'player1'
                      'player2'
@@ -139,4 +144,5 @@ until game_logic.game_end
                    end
 
 end
-ui.winner_message
+
+ui.winner_message (winner)
