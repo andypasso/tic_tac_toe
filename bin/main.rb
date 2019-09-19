@@ -121,14 +121,14 @@ player2 = Player.new(name2.cyan, symbol2.cyan, array2)
 again="Y"
 
   while again == "Y"
-  current_player = 'player1'
-  board = Board.new(current_player)
+  player = true
+  board = Board.new
   game_logic = GameLogic.new(player1, player2, board.cell)
   ui.display_board board.cell
   moves = 0 
   until game_logic.game_end || moves >8
 
-    mark = ui.get_mark(if current_player == 'player1'
+    mark = ui.get_mark(if player
                         player1.name
                       else
                         player2.name
@@ -143,12 +143,12 @@ again="Y"
     end
 
 
-    if current_player == 'player1'
+    if player
       game_logic.update_player1 (mark)
     else
       game_logic.update_player2 (mark)
     end
-    if current_player == "player1"
+    if player
       board.update_cell(mark, player1.symbol)
     else
       board.update_cell(mark, player2.symbol)
@@ -157,11 +157,11 @@ again="Y"
     ui.display_board board.cell
     winner = game_logic.check_winner
 
-    current_player = if current_player == 'player1'
-                      'player2'
-                    else
-                      'player1'
-                    end
+    if player
+      player = false
+    else
+      player = true
+    end
                   
     moves = moves+1
 

@@ -3,9 +3,8 @@
 # just data for the board
 class Board
   attr_accessor :cell
-  def initialize(current_player)
+  def initialize
     @cell = ['1'.gray, '2'.gray, '3'.gray, '4'.gray, '5'.gray, '6'.gray, '7'.gray, '8'.gray, '9'.gray]
-    @current_player = current_player
   end
 
   def update_cell(mark, symbol)
