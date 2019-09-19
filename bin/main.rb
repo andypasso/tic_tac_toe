@@ -36,7 +36,7 @@ class Ui
   # this code gets where the user marks
 
   def get_mark(player)
-    puts "#{player}, where would you place your mark ?".center(40, ' ').center(59, '*')
+    puts "#{player}, where would you place your mark ?".center(50, ' ').center(59, '*')
     gets.chomp
 
   end
@@ -64,7 +64,7 @@ class Ui
   end
 
   def winner_message (winner)
-      puts "#{winner.name} wins".black.bg_green.center(68, '*')
+      puts ("the winner is ".brown + "#{winner.name}").center(55," ").center(68, '*')
     puts '=' * 50
     puts '*' * 50
   end
