@@ -22,6 +22,6 @@ class Board
   end
 
   def available?(mark)
-    return true if @cell[mark-1] == 'X'.magenta ||  @cell[mark - 1] == 'O'.cyan
+    return true if @cell[mark - 1] == 'X'.magenta || @cell[mark - 1] == 'O'.cyan
   end
 end

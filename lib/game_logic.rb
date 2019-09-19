@@ -26,11 +26,7 @@ class GameLogic
     @winner
   end
 
-  def check_empty_space
-    @cell.any?(Integer)
-  end
-
   def game_end
-    return true if !@winner.nil?
+    return true unless @winner.nil?
   end
 end
