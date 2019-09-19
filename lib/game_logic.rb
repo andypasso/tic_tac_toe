@@ -11,6 +11,14 @@ class GameLogic
     @player2 = player2
     @cell = cell
   end
+  
+  def update_player1(mark)
+    player1.array.push(mark)
+  end
+
+  def update_player2(mark)
+    player2.array.push(mark)
+  end
 
   def check_winner
     wining_compositions = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7],

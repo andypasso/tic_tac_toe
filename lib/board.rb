@@ -8,17 +8,8 @@ class Board
     @current_player = current_player
   end
 
-  def update_cell(mark)
-    @cell[mark - 1] = 'X'.magenta if @current_player == 'player1'
-    @cell[mark - 1] = 'O'.cyan if @current_player == 'player2'
-  end
-
-  def change
-    @current_player = if @current_player == 'player1'
-                        'player2'
-                      else
-                        'player1'
-                      end
+  def update_cell(mark, symbol)
+    @cell[mark - 1] = symbol
   end
 
   def available?(mark)

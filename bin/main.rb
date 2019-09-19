@@ -113,11 +113,11 @@ ui.display_instructions
 name1 = ui.prompt_player_name('player 1')
 symbol1 = 'X'
 array1 = []
-player1 = Player.new(name1.magenta, symbol1, array1)
+player1 = Player.new(name1.magenta, symbol1.magenta, array1)
 name2 = ui.prompt_player_name('player 2')
 symbol2 = 'O'
 array2 = []
-player2 = Player.new(name2.cyan, symbol2, array2)
+player2 = Player.new(name2.cyan, symbol2.cyan, array2)
 again="Y"
 
   while again == "Y"
@@ -144,12 +144,15 @@ again="Y"
 
 
     if current_player == 'player1'
-      player1.array.push(mark)
+      game_logic.update_player1 (mark)
     else
-      player2.array.push(mark)
+      game_logic.update_player2 (mark)
     end
-    board.update_cell mark
-    board.change
+    if current_player == "player1"
+      board.update_cell(mark, player1.symbol)
+    else
+      board.update_cell(mark, player2.symbol)
+    end
 
     ui.display_board board.cell
     winner = game_logic.check_winner
