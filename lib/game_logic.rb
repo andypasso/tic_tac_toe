@@ -11,7 +11,7 @@ class GameLogic
     @player2 = player2
     @cell = cell
   end
-  
+
   def update_player1(mark)
     player1.array.push(mark)
   end
