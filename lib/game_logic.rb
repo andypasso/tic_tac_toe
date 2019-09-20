@@ -3,21 +3,30 @@
 # wining contitions and checks
 class GameLogic
   attr_reader :wining_compositions, :winner
-  attr_reader :player1, :player2
+  attr_accessor :player1, :player2, :current, :cell
 
-  def initialize(player1, player2, cell)
+  def initialize(player1, player2, cell, current)
     @winner = nil
     @player1 = player1
     @player2 = player2
     @cell = cell
+    @current = current
   end
 
-  def update_player1(mark)
-    player1.array.push(mark)
+  def update_player(mark)
+    @current.array.push(mark)
   end
 
-  def update_player2(mark)
-    player2.array.push(mark)
+  def update_cell(mark)
+    @cell[mark - 1] = @current.symbol
+  end
+
+  def switch
+    @current = if @current == @player1
+                 @player2
+               else
+                 @player1
+               end
   end
 
   def check_winner

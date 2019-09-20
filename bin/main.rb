@@ -123,17 +123,14 @@ again="Y"
   while again == "Y"
   player = true
   board = Board.new
-  game_logic = GameLogic.new(player1, player2, board.cell)
+  current = player1
+  game_logic = GameLogic.new(player1, player2, board.cell, current)
   ui.display_board board.cell
   moves = 0 
   until game_logic.game_end || moves >8
 
-    mark = ui.get_mark(if player
-                        player1.name
-                      else
-                        player2.name
-                      end).to_i
-      
+    mark = ui.get_mark(game_logic.current.name).to_i
+      4
     while mark==0 || mark > 9 || board.available?(mark)
       if mark==0 || mark > 9
         mark = ui.invalid_cell
@@ -142,27 +139,11 @@ again="Y"
       end
     end
 
-
-    if player
-      game_logic.update_player1 (mark)
-    else
-      game_logic.update_player2 (mark)
-    end
-    if player
-      board.update_cell(mark, player1.symbol)
-    else
-      board.update_cell(mark, player2.symbol)
-    end
-
+    game_logic.update_player (mark)
+    game_logic.update_cell(mark)
     ui.display_board board.cell
     winner = game_logic.check_winner
-
-    if player
-      player = false
-    else
-      player = true
-    end
-                  
+    game_logic.switch              
     moves = moves+1
 
   end
