@@ -4,7 +4,7 @@ This is the third project of the Main Ruby curriculum at Microverse .
 
 *Tic-Tac -Toe involves looking ahead and trying to figure out what the person playing against you might do next.*
 
-## GAME RULES
+**GAME RULES**
 
 - Two players are needed to play this game .
    The games asks both players to enter their names. The first player is assigned the mark “X” and the second player is assigned the mark “O”.
@@ -19,10 +19,10 @@ This is the third project of the Main Ruby curriculum at Microverse .
 
 - When all 9 squares are full, the game is over. If no player has 3 marks in a row, the game ends in a tie.
 
-## Author
+**Author**
 
 [@andynarf](https://github.com/andynarf)
 
-## Technologies
+**Technologies**
 
 I used Ruby to complete the project .
