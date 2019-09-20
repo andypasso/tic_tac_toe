@@ -3,15 +3,13 @@
 require_relative '../lib/game_logic.rb'
 require_relative '../lib/board.rb'
 require_relative '../lib/players.rb'
-require_relative '../lib/ui.rb'
+require_relative '../lib/color.rb'
 
 class Ui
   
-  def intitialize; end
-
   def display_instructions
     puts '*' * 50
-    puts 'Welcome To my Tic-Tac-Toe Game!'.center(50, '*')
+    puts 'Welcome To my Tic-Tac-Toe Game!'.green.center(59, '*')
     puts '*' * 50
     puts '=' * 50
     puts 'RULES'.center(50, '*')
@@ -32,60 +30,72 @@ class Ui
   # this code defines each player
   def prompt_player_name(player)
     puts " Enter your name, #{player}:".center(40, ' ').center(50, '*')
-    gets.chomp
+    gets.chomp.capitalize
   end
 
   # this code gets where the user marks
 
   def get_mark(player)
-    puts "#{player}, where would you place your mark ?".center(40, ' ').center(50, '*')
+    puts "#{player}, where would you place your mark ?".center(50, ' ').center(59, '*')
     gets.chomp
 
-    # while board.available? == false
-    #   puts 'That cell has already been selected. Please choose another one.'
-    #   @mark = gets.chomp
-    # end
+  end
+  def display_available
+    puts '*' * 50
+      puts 'That cell has already been selected.'
+      puts  'Please choose another one.'
+      puts '*' * 50
+      gets.chomp.to_i
+  end
+
+  def invalid_cell
+    puts '*' * 50
+    puts "that is not a valid cell"
+    puts '*' * 50
+    gets.chomp.to_i
   end
 
   def end_message
     puts '*' * 50
     puts '*' * 50
-    puts 'Thank you for playing!'.center(50, '*')
+    puts 'Thank you for playing!'.green.center(59, '*')
     puts '*' * 50
     puts '*' * 50
   end
 
-  def winner_message
-    puts '*' * 50
-    puts '=' * 50
-    if game_logic.check_winner.nil?
-      puts 'the game is a draw'.center(50, '*')
-    else
-      puts "#{winner.name} wins".center(50, '*')
-    end
+  def winner_message (winner)
+      puts ("the winner is ".brown + "#{winner.name}").center(55," ").center(68, '*')
     puts '=' * 50
     puts '*' * 50
   end
 
-  def play_again
-    puts 'do you want to play again? [y/n] ' .center(50, '*')
-    @again = gets.chomp.upcase
-    loop do
-      break unless @again != Y && @again != N
+  def draw_message
 
-      puts 'that is not a valid answer, please type y or n ' .center(50, '*')
-      @again = gets.chomp.upcase
+      puts '*' * 50
+      puts '=' * 50
+      puts ' Draw Game '.black.bg_brown.center(68, '*')
+  end
+
+  def play_again (again)
+    puts 'do you want to play again? [y/n] '.brown.center(59, '*')
+    again = gets.chomp.upcase
+    while again != "Y" && again != "N"
+      puts 'that is not a valid answer,'.brown.center(59, '*')
+      puts ' please type y or n '.brown.center(59, '*')
+      again = gets.chomp.upcase
     end
-    @again
+    again
   end
 
   def display_board(cells)
+    puts '*' * 50
+    puts '*' * 50
     puts '   |   |   '.center(40, ' ').center(50, '*')
-    puts " #{cells[0]} | #{cells[1]} | #{cells[2]} ".center(40, ' ').center(50, '*')
+    puts " #{cells[0]} | #{cells[1]} | #{cells[2]} ".center(69, ' ').center(77, '*')
     puts '----+----+----'.center(40, ' ').center(50, '*')
-    puts " #{cells[3]} | #{cells[4]} | #{cells[5]} ".center(40, ' ').center(50, '*')
+    puts " #{cells[3]} | #{cells[4]} | #{cells[5]} ".center(69, ' ').center(77, '*')
     puts '----+----+----'.center(40, ' ').center(50, '*')
-    puts " #{cells[6]} | #{cells[7]} | #{cells[8]} ".center(40, ' ').center(50, '*')
+    puts " #{cells[6]} | #{cells[7]} | #{cells[8]} ".center(69, ' ').center(77, '*')
     puts '   |   |   '.center(40, ' ').center(50, '*')
     puts '*' * 50
     puts '*' * 50
@@ -103,40 +113,47 @@ ui.display_instructions
 name1 = ui.prompt_player_name('player 1')
 symbol1 = 'X'
 array1 = []
-player1 = Player.new(name1, symbol1, array1)
+player1 = Player.new(name1.magenta, symbol1.magenta, array1)
 name2 = ui.prompt_player_name('player 2')
 symbol2 = 'O'
 array2 = []
-player2 = Player.new(name2, symbol2, array2)
-current_player = 'player1'
+player2 = Player.new(name2.cyan, symbol2.cyan, array2)
+again="Y"
 
-board = Board.new(current_player)
-game_logic = GameLogic.new(player1, player2, board.cell)
-ui.display_board board.cell
-
-until game_logic.game_end
-
-  mark = ui.get_mark(if current_player == 'player1'
-                       player1.name
-                     else
-                       player2.name
-                     end).to_i
-
-  if current_player == 'player1'
-    player1.array.push(mark)
-  else
-    player2.array.push(mark)
-  end
-  board.update_cell mark
-  board.change
-
+  while again == "Y"
+  player = true
+  board = Board.new
+  current = player1
+  game_logic = GameLogic.new(player1, player2, board.cell, current)
   ui.display_board board.cell
+  moves = 0 
+  until game_logic.game_end || moves >8
 
-  current_player = if current_player == 'player1'
-                     'player2'
-                   else
-                     'player1'
-                   end
+    mark = ui.get_mark(game_logic.current.name).to_i
+      4
+    while mark==0 || mark > 9 || board.available?(mark)
+      if mark==0 || mark > 9
+        mark = ui.invalid_cell
+      else
+        mark = ui.display_available
+      end
+    end
 
+    game_logic.update_player (mark)
+    game_logic.update_cell(mark)
+    ui.display_board board.cell
+    winner = game_logic.check_winner
+    game_logic.switch              
+    moves = moves+1
+
+  end
+  unless winner==nil
+  ui.winner_message (winner)
+  else
+    ui.draw_message
+  end
+  again = ui.play_again (again)
+  player1.array=[]
+  player2.array=[]
 end
-ui.winner_message
+ui.end_message
